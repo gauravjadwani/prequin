@@ -1,3 +1,5 @@
+"use client"; 
+
 import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,11 +8,23 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useRouter } from 'next/navigation';
+import { MouseEvent } from 'react';
 
+
+// HTMLTableRowElement
 function getName(obj:any,key:string){
   return obj[key] ? obj[key] : '-'
 }
 export default function BasicTable(props:any) {
+  const router = useRouter();
+  function handleClick(event: MouseEvent<HTMLTableRowElement>,value:any){
+
+    event.preventDefault();
+  
+    // Redirect to a different page
+    router.push(`investors/${value}`);
+  }
   console.log("props",props.data)
   return (
     <TableContainer component={Paper}>
@@ -29,8 +43,9 @@ export default function BasicTable(props:any) {
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              onClick={(e)=>handleClick(e,row?.firm_id)}
             >
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" >
                 {getName(row,'firm_id')}
               </TableCell>
               <TableCell align="right">{getName(row,'firm_name')}</TableCell>
